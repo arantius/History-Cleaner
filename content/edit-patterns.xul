@@ -26,7 +26,7 @@ window.addEventListener('load', function() {
 
 function savePatterns() {
   var patternBox = document.getElementById('patterns');
-  gHistCleanSetPatterns(patternBox.value.split('\n'));
+  gHistCleanSetPatternStrs(patternBox.value.split('\n'));
 }
 ]]></script>
 
