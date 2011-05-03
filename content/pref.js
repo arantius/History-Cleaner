@@ -1,7 +1,8 @@
 var EXPORTED_SYMBOLS = [
     'gHistCleanAddPatternStr',
     'gHistCleanGetPatterns',
-    'gHistCleansetPatterns',
+    'gHistCleanSetPatterns',
+    'gHistCleanSetPatternStrs',
     ];
 
 var gPrefBranch = Components.classes["@mozilla.org/preferences-service;1"]
@@ -11,6 +12,8 @@ var gPrefBranch = Components.classes["@mozilla.org/preferences-service;1"]
 var gHistCleanPatterns = null;
 
 function gHistCleanAddPatternStr(aPatternStr) {
+  if (!aPatternStr) return;
+
   var patterns = gHistCleanGetPatterns(); // in case it's the first access
   patterns.push(new RegExp('^' + aPatternStr + '$'));
   gHistCleanSetPatterns(patterns);
@@ -27,6 +30,14 @@ function gHistCleanGetPatterns() {
 
 function gHistCleanSetPatterns(aPatterns) {
   gHistCleanPatterns = aPatterns;
+  var src = JSON.stringify(gHistCleanPatterns.map(
+      function(pattern) { return pattern.source; }));
+  gPrefBranch.setCharPref('patterns', src);
+}
+
+function gHistCleanSetPatternStrs(aPatternStrs) {
+  gHistCleanPatterns = aPatternStrs.map(
+      function(pattern) { return new RegExp(pattern); });
   var src = JSON.stringify(gHistCleanPatterns.map(
       function(pattern) { return pattern.source; }));
   gPrefBranch.setCharPref('patterns', src);

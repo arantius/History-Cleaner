@@ -5,23 +5,28 @@
 <?xml-stylesheet href='chrome://histclean/content/dialog.css' type='text/css'?>
 
 <dialog xmlns='http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul'
-  title='Add a History Cleaner pattern'
+  title='Edit History Cleaner patterns'
   buttons='accept,cancel'
-  ondialogaccept='return addPattern();'
+  ondialogaccept='return savePatterns();'
 >
 
-<textbox id='pattern' flex='1'></textbox>
+<vbox>
+  <label value='One pattern per line:'/>
+  <textbox id='patterns' multiline='true' flex='1'></textbox>
+</vbox>
 
 <script type='application/x-javascript'><![CDATA[
 Components.utils.import('chrome://histclean/content/pref.js');
 window.addEventListener('load', function() {
-  var patternBox = document.getElementById('pattern');
-  patternBox.value = window.arguments[0];
+  var patternBox = document.getElementById('patterns');
+  var patterns = gHistCleanGetPatterns().map(
+      function(pattern) { return pattern.source; });
+  patternBox.value = patterns.join('\n');
 }, false);
 
-function addPattern() {
-  var patternBox = document.getElementById('pattern');
-  gHistCleanAddPatternStr(patternBox.value);
+function savePatterns() {
+  var patternBox = document.getElementById('patterns');
+  gHistCleanSetPatterns(patternBox.value.split('\n'));
 }
 ]]></script>
 

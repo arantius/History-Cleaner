@@ -1,0 +1,7 @@
+textbox {
+  width: 50em;
+}
+
+textbox[multiline=true] {
+  height: 10em;
+}
