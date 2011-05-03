@@ -1,4 +1,4 @@
-var EXPORTED_SYMBOLS = ['gHistCleanObserverInit'];
+var EXPORTED_SYMBOLS = ['gHistCleanObserverInit', 'gHistCleanRemoveUri'];
 
 Components.utils.import('chrome://histclean/content/pref.js');
 
@@ -38,15 +38,19 @@ function gHistCleanObserverInit() {
   gHistoryService.addObserver(observer, false);
 }
 
+function gHistCleanRemoveUri(aUri) {
+  gLocalClearing = true;
+  gHistoryService.removePage(aUri);
+  gLocalClearing = false;
+}
+
 function onUri(aUri) {
   Components.utils.reportError('Saw a URI: ' + aUri.spec);
   var patterns = gHistCleanGetPatterns();
   for (var i = 0, pattern = null; pattern = patterns[i]; i++) {
     if (aUri.spec.match(pattern)) {
       Components.utils.reportError('and it matches: ' + pattern);
-      gLocalClearing = true;
-      gHistoryService.removePage(aUri);
-      gLocalClearing = false;
+      gHistCleanRemoveUri(aUri);
       break;
     }
   }

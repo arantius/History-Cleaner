@@ -15,7 +15,7 @@ function gHistCleanAddPatternStr(aPatternStr) {
   if (!aPatternStr) return;
 
   var patterns = gHistCleanGetPatterns(); // in case it's the first access
-  patterns.push(new RegExp('^' + aPatternStr + '$'));
+  patterns.push(new RegExp(aPatternStr));
   gHistCleanSetPatterns(patterns);
 }
 

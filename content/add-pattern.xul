@@ -10,19 +10,13 @@
   ondialogaccept='return addPattern();'
 >
 
-<textbox id='pattern' flex='1'></textbox>
+<vbox>
+  <textbox id='pattern' flex='1'></textbox>
+  <progressmeter id='progressmeter' mode='undetermined' flex='1'
+    collapsed='true'
+  />
+</vbox>
 
-<script type='application/x-javascript'><![CDATA[
-Components.utils.import('chrome://histclean/content/pref.js');
-window.addEventListener('load', function() {
-  var patternBox = document.getElementById('pattern');
-  patternBox.value = window.arguments[0];
-}, false);
-
-function addPattern() {
-  var patternBox = document.getElementById('pattern');
-  gHistCleanAddPatternStr(patternBox.value);
-}
-]]></script>
+<script type='application/x-javascript' src="add-pattern.js"></script>
 
 </dialog>
