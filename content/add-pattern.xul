@@ -4,23 +4,23 @@
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 
 <dialog xmlns='http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul'
-  title="Add a History Cleaner glob"
+  title="Add a History Cleaner pattern"
   buttons="accept,cancel"
-  ondialogaccept="return addGlob();"
+  ondialogaccept="return addPattern();"
 >
 
-<textbox id='glob' style='width: 40em;'></textbox>
+<textbox id='pattern' style='width: 40em;'></textbox>
 
 <script type='application/x-javascript'><![CDATA[
 Components.utils.import('chrome://histclean/content/pref.js');
 window.addEventListener('load', function() {
-  var globBox = document.getElementById('glob');
-  globBox.value = window.arguments[0];
+  var patternBox = document.getElementById('pattern');
+  patternBox.value = window.arguments[0];
 }, false);
 
-function addGlob() {
-  var globBox = document.getElementById('glob');
-  gHistCleanAddGlob(globBox.value);
+function addPattern() {
+  var patternBox = document.getElementById('pattern');
+  gHistCleanAddPatternStr(patternBox.value);
 }
 ]]></script>
 

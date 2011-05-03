@@ -1,5 +1,7 @@
 var EXPORTED_SYMBOLS = ['gHistCleanObserverInit'];
 
+Components.utils.import('chrome://histclean/content/pref.js');
+
 var gHistoryService = Components
     .classes["@mozilla.org/browser/nav-history-service;1"]
     .getService(Components.interfaces.nsINavHistoryService);
@@ -19,7 +21,8 @@ var observer = {
   onClearHistory: function() { },
   onDeleteURI: function(aUri) {
     openDialog(
-        null, 'chrome://histclean/content/addglob.xul', null, null, aUri.spec);
+        null, 'chrome://histclean/content/add-pattern.xul',
+        null, null, aUri.spec.replace(/([?\\])/g, '\\$1'));
   },
   onDeleteVisits: function(aUri, aVisitTime) { },
   onEndUpdateBatch: function() { },
@@ -28,13 +31,19 @@ var observer = {
   onVisit: function(
       aUri, aVisitID, aTime, aSessionID, aReferringID, aTransitionType, aAdded
   ) {
-    Components.utils.reportError('visit...');
     onUri(aUri);
   }
 };
 
 function onUri(aUri) {
   Components.utils.reportError('Saw a URI: ' + aUri.spec);
+  var patterns = gHistCleanGetPatterns();
+  for (var i = 0, pattern = null; pattern = patterns[i]; i++) {
+    if (aUri.spec.match(pattern)) {
+      Components.utils.reportError('and it matches: ' + pattern);
+      break;
+    }
+  }
 }
 
 // http://goo.gl/UpWa0

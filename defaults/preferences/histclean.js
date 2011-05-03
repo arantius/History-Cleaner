@@ -1,1 +1,1 @@
-pref('extensions.histclean.globs', '[]');
+pref('extensions.histclean.patterns', '[]');

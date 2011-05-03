@@ -1,29 +1,33 @@
 var EXPORTED_SYMBOLS = [
-    'gHistCleanAddGlob',
-    'gHistCleanGetGlobs',
-    'gHistCleansetGlobs',
+    'gHistCleanAddPatternStr',
+    'gHistCleanGetPatterns',
+    'gHistCleansetPatterns',
     ];
 
 var gPrefBranch = Components.classes["@mozilla.org/preferences-service;1"]
     .getService(Components.interfaces.nsIPrefService)
     .getBranch("extensions.histclean.");
 
-var gHistCleanGlobs = null;
+var gHistCleanPatterns = null;
 
-function gHistCleanAddGlob(aGlob) {
-  var globs = gHistCleanGetGlobs();
-  globs.push(aGlob);
-  gHistCleanSetGlobs(globs);
+function gHistCleanAddPatternStr(aPatternStr) {
+  var patterns = gHistCleanGetPatterns(); // in case it's the first access
+  patterns.push(new RegExp('^' + aPatternStr + '$'));
+  gHistCleanSetPatterns(patterns);
 }
 
-function gHistCleanGetGlobs() {
-  if (null == gHistCleanGlobs) {
-    gHistCleanGlobs = JSON.parse(gPrefBranch.getCharPref('globs') || '');
+function gHistCleanGetPatterns() {
+  if (null == gHistCleanPatterns) {
+    var src = gPrefBranch.getCharPref('patterns');
+    gHistCleanPatterns = JSON.parse(src).map(
+        function(pattern) { return new RegExp(pattern); });
   }
-  return gHistCleanGlobs;
+  return gHistCleanPatterns;
 }
 
-function gHistCleanSetGlobs(aGlobs) {
-  gHistCleanGlobs = aGlobs;
-  return gPrefBranch.setCharPref('globs', JSON.stringify(gHistCleanGlobs));
+function gHistCleanSetPatterns(aPatterns) {
+  gHistCleanPatterns = aPatterns;
+  var src = JSON.stringify(gHistCleanPatterns.map(
+      function(pattern) { return pattern.source; }));
+  gPrefBranch.setCharPref('patterns', src);
 }
