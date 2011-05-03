@@ -1,0 +1,5 @@
+content histclean content/
+skin    histclean classic/1.0 skin/
+
+overlay chrome://browser/content/browser.xul chrome://histclean/content/overlay.xul
+style   chrome://browser/content/browser.xul chrome://histclean/skin/overlay.css
