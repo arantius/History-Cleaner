@@ -16,9 +16,6 @@ function gHistCleanAddPatternStr(aPatternStr) {
 
   var patterns = gHistCleanGetPatterns(); // in case it's the first access
   var pattern = new RegExp(aPatternStr);
-  Components.utils.reportError(patterns+'\n');
-  Components.utils.reportError(patternsToStrs(patterns)+'\n');
-  Components.utils.reportError(pattern.source+'\n');
   if (-1 !== patternsToStrs(patterns).indexOf(pattern.source)) return;
 
   patterns.push(pattern);

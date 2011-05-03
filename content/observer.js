@@ -45,11 +45,9 @@ function gHistCleanRemoveUri(aUri) {
 }
 
 function onUri(aUri) {
-  Components.utils.reportError('Saw a URI: ' + aUri.spec);
   var patterns = gHistCleanGetPatterns();
   for (var i = 0, pattern = null; pattern = patterns[i]; i++) {
     if (aUri.spec.match(pattern)) {
-      Components.utils.reportError('and it matches: ' + pattern);
       gHistCleanRemoveUri(aUri);
       break;
     }
