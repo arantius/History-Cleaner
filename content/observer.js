@@ -7,12 +7,7 @@ var gHistoryService = Components
     .getService(Components.interfaces.nsINavHistoryService);
 
 var gInitDone = false;
-function gHistCleanObserverInit() {
-  if (gInitDone) return;
-  gInitDone = true;
-
-  gHistoryService.addObserver(observer, false);
-}
+var gLocalClearing = false;
 
 // https://developer.mozilla.org/en/XPCOM_Interface_Reference/nsINavHistoryObserver
 var observer = {
@@ -20,6 +15,7 @@ var observer = {
   onBeginUpdateBatch: function() { },
   onClearHistory: function() { },
   onDeleteURI: function(aUri) {
+    if (gLocalClearing) return;
     openDialog(
         null, 'chrome://histclean/content/add-pattern.xul',
         null, null, aUri.spec.replace(/([?\\])/g, '\\$1'));
@@ -35,12 +31,22 @@ var observer = {
   }
 };
 
+function gHistCleanObserverInit() {
+  if (gInitDone) return;
+  gInitDone = true;
+
+  gHistoryService.addObserver(observer, false);
+}
+
 function onUri(aUri) {
   Components.utils.reportError('Saw a URI: ' + aUri.spec);
   var patterns = gHistCleanGetPatterns();
   for (var i = 0, pattern = null; pattern = patterns[i]; i++) {
     if (aUri.spec.match(pattern)) {
       Components.utils.reportError('and it matches: ' + pattern);
+      gLocalClearing = true;
+      gHistoryService.removePage(aUri);
+      gLocalClearing = false;
       break;
     }
   }
