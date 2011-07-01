@@ -16,9 +16,10 @@ var observer = {
   onClearHistory: function() { },
   onDeleteURI: function(aUri) {
     if (gLocalClearing) return;
-    openDialog(
-        null, 'chrome://histclean/content/add-pattern.xul',
-        null, null, aUri.spec.replace(/([?\\])/g, '\\$1'));
+//    // This is too noisy. =(
+//    openDialog(
+//        null, 'chrome://histclean/content/add-pattern.xul',
+//        null, null, aUri.spec.replace(/([?\\])/g, '\\$1'));
   },
   onDeleteVisits: function(aUri, aVisitTime) { },
   onEndUpdateBatch: function() { },
