@@ -16,10 +16,21 @@ var observer = {
   onClearHistory: function() { },
   onDeleteURI: function(aUri) {
     if (gLocalClearing) return;
-//    // This is too noisy. =(
-//    openDialog(
-//        null, 'chrome://histclean/content/add-pattern.xul',
-//        null, null, aUri.spec.replace(/([?\\])/g, '\\$1'));
+    var s = Components.stack
+    while (s) {
+      if (s.name == 'onxblkeypress'
+          && s.filename == 'chrome://global/content/bindings/autocomplete.xml'
+      ) {
+        // Deletion from awesome bar.
+        openDialog(
+            'chrome://histclean/content/add-pattern.xul',
+            'resizable=no',
+            aUri.spec.replace(/([?\\])/g, '\\$1')
+            );
+        return;
+      }
+      s = s.caller;
+    }
   },
   onDeleteVisits: function(aUri, aVisitTime) { },
   onEndUpdateBatch: function() { },
@@ -56,10 +67,10 @@ function onUri(aUri) {
 }
 
 // http://goo.gl/UpWa0
-function openDialog(parentWindow, url, windowName, features) {
+function openDialog(url, features) {
   var array = Components.classes["@mozilla.org/array;1"]
       .createInstance(Components.interfaces.nsIMutableArray);
-  for (var i = 4; i < arguments.length; i++) {
+  for (var i = 2; i < arguments.length; i++) {
       var variant = Components.classes["@mozilla.org/variant;1"]
           .createInstance(Components.interfaces.nsIWritableVariant);
       variant.setFromVariant(arguments[i]);
@@ -68,5 +79,6 @@ function openDialog(parentWindow, url, windowName, features) {
 
   var watcher = Components.classes["@mozilla.org/embedcomp/window-watcher;1"]
       .getService(Components.interfaces.nsIWindowWatcher);
-  return watcher.openWindow(parentWindow, url, windowName, features, array);
+  return watcher.openWindow(
+      null /* parentWindow */, url, null /* windowName */, features, array);
 }
