@@ -5,12 +5,14 @@
 <?xml-stylesheet href='chrome://histclean/content/dialog.css' type='text/css'?>
 
 <dialog xmlns='http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul'
+  id='history-cleaner-edit-patterns'
   title='Edit History Cleaner patterns'
   buttons='accept,cancel'
   ondialogaccept='return savePatterns();'
+  persist='screenX screenY width height sizemode'
 >
 
-<vbox>
+<vbox flex='1'>
   <label value='One pattern per line:'/>
   <textbox id='patterns' multiline='true' flex='1'></textbox>
 </vbox>

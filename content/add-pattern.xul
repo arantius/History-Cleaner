@@ -5,12 +5,14 @@
 <?xml-stylesheet href='chrome://histclean/content/dialog.css' type='text/css'?>
 
 <dialog xmlns='http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul'
+  id='history-cleaner-add-pattern'
   title='Add a History Cleaner pattern'
   buttons='accept,cancel'
   ondialogaccept='return addPattern();'
+  persist='screenX screenY width height sizemode'
 >
 
-<vbox>
+<vbox flex='1'>
   <textbox id='pattern' flex='1'></textbox>
   <progressmeter id='progressmeter' mode='undetermined' flex='1'
     collapsed='true'
