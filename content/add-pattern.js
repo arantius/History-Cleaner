@@ -12,11 +12,10 @@ function addPattern() {
   progressMeter.removeAttribute('collapsed');
   var patternBox = document.getElementById('pattern');
 
-  var patternStr = '^' + patternBox.value + '$';
   // TODO: Web worker?
   setTimeout(function() {
-    gHistCleanAddPatternStr(patternStr);
-    clearAllEntriesForPatternStr(patternStr);
+    gHistCleanAddPatternStr(patternBox.value);
+    clearAllEntriesForPatternStr(patternBox.value);
     window.close();
   }, 25);
 
