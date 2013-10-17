@@ -3,7 +3,7 @@
   <Description about="urn:mozilla:install-manifest">
     <em:id>histclean@trac.arantius.com</em:id>
     <em:name>History Cleaner</em:name>
-    <em:version>1</em:version>
+    <em:version>2</em:version>
     <em:description>Keep your history cleaner, keep your awesome bar awesome.</em:description>
     <em:type>2</em:type>
 
