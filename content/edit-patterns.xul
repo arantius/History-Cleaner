@@ -23,7 +23,7 @@ window.addEventListener('load', function() {
   var patternBox = document.getElementById('patterns');
   var patterns = gHistCleanGetPatterns().map(
       function(pattern) { return pattern.source; });
-  patternBox.value = patterns.join('\n');
+  patternBox.value = patterns.join('\n').replace(/\\\//g, '/');
 }, false);
 
 function savePatterns() {
