@@ -46,5 +46,8 @@ function patternsToStrs(patterns) {
   return patterns.map(function(pattern) { return pattern.source; });
 }
 function strsToPatterns(strs) {
-  return strs.map(function(str) { return new RegExp(str); });
+  return strs.map(function(str) {
+    str = str.replace(/^\s+/, '').replace(/\s+$/, '');
+    if (str) return new RegExp(str);
+  });
 }
